@@ -1,0 +1,318 @@
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+interface Flag {
+  id: string;
+  name: string;
+  era: string;
+  period: string;
+  description: string;
+  symbolism: string;
+  colors: string[];
+  significance: string;
+}
+
+const flags: Flag[] = [
+  {
+    id: 'horus-standard',
+    name: 'Horus Standard',
+    era: 'predynastic',
+    period: 'Predynastic Period (5500-3100 BCE)',
+    description: 'The Horus falcon standard was one of the earliest royal symbols, representing divine kingship and protection.',
+    symbolism: 'The falcon represented Horus, the sky god and protector of the pharaoh. The standard signified royal authority and divine right to rule.',
+    colors: ['#FF7A00', '#000000', '#D4AF37'],
+    significance: 'Used in royal processions and military campaigns as a symbol of divine protection and pharaonic power.'
+  },
+  {
+    id: 'ankh-standard',
+    name: 'Ankh Standard',
+    era: 'old-kingdom',
+    period: 'Old Kingdom (2686-2181 BCE)',
+    description: 'The Ankh, symbol of life, was carried on standards during religious ceremonies and royal processions.',
+    symbolism: 'The Ankh represents eternal life, divine breath, and the union of male and female principles. It was held by gods and pharaohs.',
+    colors: ['#D4AF37', '#000000', '#FF7A00'],
+    significance: 'Central to religious rituals, symbolizing the gift of life from the gods to the pharaoh and the people.'
+  },
+  {
+    id: 'was-scepter-standard',
+    name: 'Was Scepter Standard',
+    era: 'old-kingdom',
+    period: 'Old Kingdom (2686-2181 BCE)',
+    description: 'The Was scepter standard represented power and dominion over chaos, carried in military and ceremonial contexts.',
+    symbolism: 'The Was scepter, with its forked base and animal head, symbolized control over the forces of chaos and divine power.',
+    colors: ['#000000', '#FF7A00', '#8B4513'],
+    significance: 'Displayed during military victories and coronation ceremonies to demonstrate pharaonic authority.'
+  },
+  {
+    id: 'djed-pillar-standard',
+    name: 'Djed Pillar Standard',
+    era: 'middle-kingdom',
+    period: 'Middle Kingdom (2055-1650 BCE)',
+    description: 'The Djed pillar standard symbolized stability, strength, and the backbone of Osiris.',
+    symbolism: 'Associated with Osiris, god of the afterlife, the Djed represents stability, resurrection, and eternal endurance.',
+    colors: ['#D4AF37', '#228B22', '#000000'],
+    significance: 'Raised during the Sed festival to renew the pharaoh\'s power and ensure cosmic stability.'
+  },
+  {
+    id: 'sun-disk-standard',
+    name: 'Sun Disk of Ra Standard',
+    era: 'new-kingdom',
+    period: 'New Kingdom (1550-1077 BCE)',
+    description: 'The solar disk standard representing Ra, the supreme sun god, carried at the head of royal and religious processions.',
+    symbolism: 'The sun disk with uraeus (cobra) represented Ra\'s all-seeing power, divine light, and protection against enemies.',
+    colors: ['#FFD700', '#FF7A00', '#8B0000'],
+    significance: 'Central to sun worship during the New Kingdom, especially under Akhenaten\'s religious reforms.'
+  },
+  {
+    id: 'aten-disk-standard',
+    name: 'Aten Disk Standard',
+    era: 'new-kingdom',
+    period: 'Amarna Period (1353-1336 BCE)',
+    description: 'The Aten disk with rays ending in hands, unique to Akhenaten\'s monotheistic revolution.',
+    symbolism: 'The sun disk Aten represented the one true god in Akhenaten\'s reformed religion, with rays bestowing life (ankh symbols).',
+    colors: ['#FFD700', '#FF7A00', '#FFFFFF'],
+    significance: 'Revolutionary religious symbol that temporarily replaced traditional Egyptian polytheism.'
+  },
+  {
+    id: 'cobra-standard',
+    name: 'Uraeus Cobra Standard',
+    era: 'new-kingdom',
+    period: 'New Kingdom (1550-1077 BCE)',
+    description: 'The rearing cobra standard representing Wadjet, protector goddess of Lower Egypt.',
+    symbolism: 'The uraeus cobra symbolized royal protection, divine authority, and the fiery eye of Ra that destroys enemies.',
+    colors: ['#FFD700', '#8B0000', '#000000'],
+    significance: 'Worn on the pharaoh\'s crown and carried on standards to ward off evil and protect the king.'
+  },
+  {
+    id: 'anubis-standard',
+    name: 'Anubis Standard',
+    era: 'middle-kingdom',
+    period: 'Middle Kingdom (2055-1650 BCE)',
+    description: 'The jackal-headed standard of Anubis, god of mummification and guardian of the necropolis.',
+    symbolism: 'Anubis guided souls to the afterlife and protected tombs. The standard ensured safe passage to the underworld.',
+    colors: ['#000000', '#D4AF37', '#8B4513'],
+    significance: 'Carried in funeral processions and placed in tombs to ensure the deceased\'s protection in the afterlife.'
+  }
+];
+
+const eras = [
+  { id: 'all', label: 'All Eras' },
+  { id: 'predynastic', label: 'Predynastic' },
+  { id: 'old-kingdom', label: 'Old Kingdom' },
+  { id: 'middle-kingdom', label: 'Middle Kingdom' },
+  { id: 'new-kingdom', label: 'New Kingdom' }
+];
+
+const FlagCard = ({ flag }: { flag: Flag }) => {
+  return (
+    <Card className="group hover:shadow-glow transition-all duration-300 bg-card/50 backdrop-blur-sm border-border hover:border-primary/50">
+      <CardHeader>
+        <div className="mb-4 h-48 bg-gradient-to-br from-background to-secondary rounded-lg flex items-center justify-center overflow-hidden relative">
+          {/* Animated flag pole */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 bg-gradient-to-t from-muted to-muted-foreground h-full"></div>
+          
+          {/* Animated flag with colors */}
+          <div 
+            className="absolute top-8 left-1/2 w-32 h-24 animate-[wave_3s_ease-in-out_infinite] origin-left"
+            style={{
+              background: `linear-gradient(135deg, ${flag.colors[0]}, ${flag.colors[1]}, ${flag.colors[2] || flag.colors[0]})`,
+              clipPath: 'polygon(0 0, 100% 0, 95% 50%, 100% 100%, 0 100%)',
+              boxShadow: `0 0 20px ${flag.colors[0]}40`
+            }}
+          >
+            <div className="absolute inset-0 opacity-30 bg-gradient-to-r from-transparent via-white to-transparent animate-[shimmer_2s_ease-in-out_infinite]"></div>
+          </div>
+          
+          {/* Symbol overlay */}
+          <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-20 group-hover:opacity-30 transition-opacity">
+            𓋹
+          </div>
+        </div>
+        
+        <CardTitle className="text-2xl text-foreground group-hover:text-primary transition-colors">
+          {flag.name}
+        </CardTitle>
+        <CardDescription className="text-primary/80">
+          {flag.period}
+        </CardDescription>
+      </CardHeader>
+      
+      <CardContent className="space-y-4">
+        <div>
+          <h4 className="font-semibold text-foreground mb-2">Description</h4>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {flag.description}
+          </p>
+        </div>
+        
+        <div>
+          <h4 className="font-semibold text-foreground mb-2">Symbolism</h4>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {flag.symbolism}
+          </p>
+        </div>
+        
+        <div>
+          <h4 className="font-semibold text-foreground mb-2">Historical Significance</h4>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {flag.significance}
+          </p>
+        </div>
+        
+        <div>
+          <h4 className="font-semibold text-foreground mb-2">Colors</h4>
+          <div className="flex gap-2">
+            {flag.colors.map((color, idx) => (
+              <div 
+                key={idx}
+                className="w-8 h-8 rounded-full border-2 border-border shadow-md"
+                style={{ backgroundColor: color }}
+                title={color}
+              ></div>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+const Flags = () => {
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      
+      <main className="pt-20">
+        {/* Header Section */}
+        <section className="relative py-16 overflow-hidden">
+          <div className="absolute inset-0 mystical-bg"></div>
+          <div className="container mx-auto px-4 relative z-10">
+            <Button 
+              variant="ghost" 
+              className="mb-6 text-primary hover:text-primary hover:bg-primary/10"
+              onClick={() => window.history.back()}
+            >
+              <ArrowLeft className="mr-2" size={20} />
+              Back
+            </Button>
+            
+            <div className="max-w-4xl">
+              <div className="inline-block px-4 py-2 rounded-full bg-primary/20 border border-primary/40 mb-6 glow-effect">
+                <span className="text-primary font-semibold">Ancient Symbols of Power</span>
+              </div>
+              
+              <h1 className="text-5xl md:text-6xl font-display text-foreground mb-6 text-glow">
+                Ancient Egyptian Flags & Standards
+              </h1>
+              
+              <p className="text-xl text-muted-foreground leading-relaxed mb-6">
+                Explore the sacred standards and flags carried in royal processions, military campaigns, and religious ceremonies throughout ancient Egyptian history. Each standard represented divine power, protection, and the eternal connection between the gods and pharaohs.
+              </p>
+              
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                  <span>{flags.length} Sacred Standards</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
+                  <span>5000+ Years of History</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Flags Gallery Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <Tabs defaultValue="all" className="w-full">
+              <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-5 mb-12 bg-secondary/50">
+                {eras.map(era => (
+                  <TabsTrigger 
+                    key={era.id} 
+                    value={era.id}
+                    className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  >
+                    {era.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              
+              {eras.map(era => (
+                <TabsContent key={era.id} value={era.id} className="mt-0">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {flags
+                      .filter(flag => era.id === 'all' || flag.era === era.id)
+                      .map(flag => (
+                        <FlagCard key={flag.id} flag={flag} />
+                      ))}
+                  </div>
+                  
+                  {flags.filter(flag => era.id === 'all' || flag.era === era.id).length === 0 && (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground">No standards found for this era.</p>
+                    </div>
+                  )}
+                </TabsContent>
+              ))}
+            </Tabs>
+          </div>
+        </section>
+
+        {/* Info Section */}
+        <section className="py-16 bg-secondary/20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl font-display text-foreground mb-8 text-center">
+                Understanding Egyptian Standards
+              </h2>
+              
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-4 p-6 bg-card/50 backdrop-blur-sm border border-border rounded-lg">
+                  <div className="text-primary text-4xl mb-4">⚔️</div>
+                  <h3 className="text-xl font-display text-foreground">Military Standards</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Standards were carried at the head of Egyptian armies, representing the divine protection of gods and the pharaoh's authority. They instilled fear in enemies and inspired courage in soldiers.
+                  </p>
+                </div>
+                
+                <div className="space-y-4 p-6 bg-card/50 backdrop-blur-sm border border-border rounded-lg">
+                  <div className="text-primary text-4xl mb-4">🏛️</div>
+                  <h3 className="text-xl font-display text-foreground">Religious Ceremonies</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    In religious processions and temple festivals, standards represented the presence of gods. Priests carried them during rituals to honor deities and ensure divine favor.
+                  </p>
+                </div>
+                
+                <div className="space-y-4 p-6 bg-card/50 backdrop-blur-sm border border-border rounded-lg">
+                  <div className="text-primary text-4xl mb-4">👑</div>
+                  <h3 className="text-xl font-display text-foreground">Royal Authority</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Standards accompanied the pharaoh in coronations, jubilee festivals, and royal appearances. They symbolized the divine right to rule and the eternal nature of kingship.
+                  </p>
+                </div>
+                
+                <div className="space-y-4 p-6 bg-card/50 backdrop-blur-sm border border-border rounded-lg">
+                  <div className="text-primary text-4xl mb-4">⚱️</div>
+                  <h3 className="text-xl font-display text-foreground">Funerary Practices</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Certain standards, especially those of Anubis and Osiris, were essential in funeral processions to guide and protect the deceased on their journey to the afterlife.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Flags;
